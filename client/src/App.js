@@ -1,13 +1,10 @@
 import React from 'react'
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom"
-
+import {BrowserRouter as Router,Switch,Route } from "react-router-dom"
 import Login from './containers/Login'
-import Main from './containers/Main'
+import ProtectedRoute from './containers/ProtectedRoute'
+import Navbar from './components/Navbar'
+
+const link = ["applications","technologys"]
 
 function App() {
 
@@ -15,7 +12,12 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={Login} />
-        <Route exact path="/main" component={Main} />
+        <div className="wrapper">
+          <Navbar list={link}/>
+          {link.map(link => (
+            <ProtectedRoute path={`/${link}`}/>
+          ))}
+        </div>  
       </Switch>
     </Router>
   )

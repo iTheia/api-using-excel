@@ -1,8 +1,8 @@
 import React, { useEffect, useState} from 'react'
 import axios from 'axios'
-
-/* const URI = 'http://localhost:5000' */
-/* const URI = 'https://limitless-mesa-69042.herokuapp.com' */
+import { useHistory } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux'
+import { login, setUser } from '../actions'
 
 export default function Login() {
 
@@ -10,19 +10,24 @@ export default function Login() {
         user:'',
         password:''
     })
-    
+
+    const history = useHistory()
+    const URI = useSelector(state => state.URI)
+    const dispatch = useDispatch()
+    const token = useSelector(state => state.isLogged)
+
+    if(token){
+        history.push('/applications')
+    }
+
     useEffect(()=>{
         const inputs = document.querySelectorAll(".input")
         inputs.forEach(input => {
             input.addEventListener("focus", function (){
-                let parent = this.parentNode.parentNode
-                parent.classList.add("focus");
+                this.parentNode.parentNode.classList.add("focus");
             })
             input.addEventListener("blur", function (){
-                let parent = this.parentNode.parentNode
-                if(this.value === ""){
-                    parent.classList.remove("focus")
-                }
+                if(this.value === "") this.parentNode.parentNode.classList.remove("focus")
             })
         })
     },[])
@@ -31,10 +36,17 @@ export default function Login() {
         let copy = user
         copy[e.target.name] = e.target.value
         setuser(copy)
-        console.log(user)
     }
     async function handleSubmit (e){
-        
+        try {
+            /* const response = await axios.post(`${URI}/signin`,user)
+            dispatch(login(response.data.token))
+            dispatch(setUser(response.data.user)) */
+            dispatch(login('response.data.token'))
+            history.push('/applications')
+        } catch (error) {
+            alert(error)
+        }
     }
     return (
         <div className="login-component">
