@@ -8,13 +8,32 @@ const userController = {
         const connection = await dbConnection()
         const query = util.promisify(connection.query).bind(connection)
 
-        const userExist = await query('select * from test')
-        /* verificar que el usuario no existe */
+        /* const userExist = await query(`SELECT * FROM USER WHERE email =${req.email}`)
+
         if(userExist){
             res.send('user alredy exists')
+<<<<<<< HEAD
         }
         /* THE INFO COMES FROM 'req.body' */
         res.send('asd')
+=======
+        } */
+
+        const data = req.body
+        const keys = Object.keys(data)
+        console.log(keys, data)
+        let columns = ''
+        keys.forEach((key, index) => {
+            columns += (index === keys.length -1)? key : `${key},`
+        })
+        let values = ''
+        keys.forEach((key, index) => {
+            values += (index === keys.length- 1)? data[key] : `${data[key]},`
+        })
+        let sql = `insert into INSERT INTO  TECHNOLOGY (${columns}) values (${values})`  
+
+        res.send(sql)
+>>>>>>> 78a52212b8d4ecbde508d2829ff6f09f432722ea
     },
     async sigIn(req, res){
         
