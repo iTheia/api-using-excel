@@ -3,18 +3,16 @@ import dbConnection from '../../database'
 import util from 'util'
 import jwt from 'jsonwebtoken'
 
-const userController = {
+const applicationsController = {
     async create(req, res){
         const connection = await dbConnection()
         const query = util.promisify(connection.query).bind(connection)
 
-        const userExist = await query('select * from test')
-        /* verificar que el usuario no existe */
-        if(userExist){
-            res.send('user alredy exists')
-        }
-        /* THE INFO COMES FROM 'req.body' */
-        res.send('asd')
+        const del = await query ( `delete  TECHNOLOGY where id = ${id}` )
+        const post = await query ( `INSERT INTO  TECHNOLOGY (${columnas}) VALUES (${datos})` )
+        const get = await query ( `delete  TECHNOLOGY where id = ${id}` )
+        const put = await query ( `delete  TECHNOLOGY where id = ${id}` )
+        res.send('variable')
     },
     async sigIn(req, res){
         
@@ -30,4 +28,4 @@ const userController = {
     }
 }
 
-export default userController
+export default applicationsController

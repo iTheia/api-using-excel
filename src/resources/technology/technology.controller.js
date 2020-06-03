@@ -3,7 +3,7 @@ import dbConnection from '../../database'
 import util from 'util'
 import jwt from 'jsonwebtoken'
 
-const userController = {
+const technologyController = {
     async create(req, res){
         const connection = await dbConnection()
         const query = util.promisify(connection.query).bind(connection)
@@ -30,4 +30,4 @@ const userController = {
     }
 }
 
-export default userController
+export default technologyController

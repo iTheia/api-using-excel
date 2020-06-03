@@ -6,7 +6,7 @@ import { catchErrors, authorization } from './middlewares'
 const router = express.Router()
 
 router.get('/', async (req, res)=>{
-    res.send('pene')
+    res.send('im alive')
 })
 
 router.post('/signup', catchErrors(userController.create))

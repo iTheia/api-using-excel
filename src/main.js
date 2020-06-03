@@ -1,7 +1,6 @@
 import express from 'express'
 import http from 'http'
 import bodyParser from 'body-parser'
-import dbConnection from './database'
 import router from './router'
 import config from './config'
 import path from 'path'

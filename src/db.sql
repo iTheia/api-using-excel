@@ -56,6 +56,14 @@ CREATE TABLE TECHNOLOGY(
     database_connect_string varchar (255),
     product_version varchar (255),
     customer_notes varchar (255),
-    oracle_notes varchar (255).
+    oracle_notes varchar (255),
     primary key (id)
- )
+ );
+
+ CREATE TABLE USERS(
+    id int AUTO_INCREMENT,
+    name varchar (255),
+    email varchar (255),
+    password varchar (20),
+    primary key (id)
+ );
