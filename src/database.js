@@ -1,12 +1,12 @@
+import mysql from 'mysql'
 import appConfig from './config'
 
-export const connection = async (config = appConfig) =>{
+const connection = async (config = appConfig) =>{
   try {
-    /* 
-        aqui va una conexion a DB
-    */
+    return mysql.createConnection(config.database)
   } catch (error) {
     console.log(error)
   }
   
 }
+export default connection

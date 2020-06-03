@@ -1,8 +1,10 @@
 const devConfig ={
     port: process.env.PORT || 5000,
     database: {
-        user:'',
-        password:''
+        host:'localhost',
+        user:'root',
+        password:'',
+        database:'db'
     },
     secret:{
         TOKEN: process.env.TOKEN

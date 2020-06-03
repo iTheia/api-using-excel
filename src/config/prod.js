@@ -1,6 +1,9 @@
 const prodConfig ={
     port: process.env.PORT || 8080,
-    database: "",
+    database: {
+        user:'',
+        password:''
+    },
     secret:{
         TOKEN: process.env.TOKEN
     }
