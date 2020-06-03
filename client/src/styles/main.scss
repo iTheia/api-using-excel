@@ -1,7 +1,7 @@
 
 .nav{
     position: fixed;
-    width: 250px;
+    width: 200px;
     height: 100vh;
     background: $text;
     .header{
@@ -27,8 +27,13 @@
         color: $bg;
     }
 }
-  
+.wrapper{
+    display: flex;
+    position: relative;
+}
 .content{
-    display: block;
-    background: #000;
+    width: 100%;
+    margin-left: 200px;
+    color: $text;
+    background: $bg;
 }
