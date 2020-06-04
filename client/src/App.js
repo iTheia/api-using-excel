@@ -12,12 +12,12 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={Login} />
-        <div className="wrapper">
+        <>
           <Navbar list={link}/>
           {link.map(link => (
-            <ProtectedRoute path={`/${link}`}/>
-          ))}
-        </div>  
+            <ProtectedRoute key={link} path={`/${link}`}/>
+          ))}   
+        </>
       </Switch>
     </Router>
   )

@@ -1,39 +1,124 @@
-
 .nav{
-    position: fixed;
-    width: 200px;
-    height: 100vh;
-    background: $text;
+    background-color: $text;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: $bg;
+    padding: 10px 5%;
     .header{
-        font-size: 22px;
-        color: $bg;
-        text-align: center;
-        line-height: 60px;
-        background: #222;
+        font-size: 20px;
     }
     &__list{
-        padding: 0 10px;
+        width: 50%;
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
         list-style: none;
     }
-    &__item{
-
+    &__items{
+        margin-right: 10px;
     }
     &__link{
+        font-size: .8rem;
+        color: inherit;
         text-decoration: none;
-        display: block;
-        height: 100%;
-        width: 100%;
-        font-size: 1rem;
-        color: $bg;
     }
 }
-.wrapper{
-    display: flex;
-    position: relative;
-}
+
 .content{
+    padding: 10px 5%;
+}
+
+.table {
     width: 100%;
-    margin-left: 200px;
-    color: $text;
-    background: $bg;
+    border-collapse: collapse;
+    display: table;
+    border-radius: 7px 7px 0 0;
+    text-align: left;
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba(0,0,0,.1);
+    &__row {
+        display: table-row;
+        text-decoration: none;
+        color:$text;
+        &:nth-child(even) {
+            background: #f3f3f3;
+        }
+        &:last-of-type{
+            border-bottom: 2px solid $contrast;
+        }
+    }
+    &__cell {
+        display: table-cell;
+        padding: 10px;
+        border-bottom: 1px solid #dddddd;
+    }
+    &__data{
+
+    }
+    &__title{
+        font-weight: bold;
+        color: $bg;
+        background-color: $contrast;
+    }
+}
+.container{
+    width: 100%;
+}
+
+.form{
+    &__input{
+        margin: 10px 10px 10px 0 ;
+        width:48%; 
+        display: inline-block;
+
+        
+        input[type=text], select, textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+            margin-top: 6px;
+            margin-bottom: 16px;
+            resize: vertical;
+        }
+    }
+    .bottom{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+
+h2{
+    margin: 10px 0;
+}
+.button{
+    padding: 5px 10px;
+    border: none;
+    font-weight: bold;
+    min-width: 90px;
+    border-radius: 5px;
+    overflow: hidden;
+
+    &__delete{
+        @extend .button;
+        color: $bg;
+        background: rgb(194, 23, 23);
+    }
+    &__create{
+        @extend .button;
+        color: #111;
+        background: rgb(22, 177, 56);
+
+    }
+    &__update{
+        @extend .button;
+        color: $bg;
+        background: rgb(26, 70, 214);
+    
+    }
 }

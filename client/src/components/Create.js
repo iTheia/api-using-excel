@@ -10,8 +10,8 @@ export default function Application(props) {
     const history = useHistory()
     const [state, setState] = useState({})
     const [keys, setKeys] = useState([])
-    const id = props.match.params.id
-    const base = `${URI}/${props.match.path.substring(1, props.match.path.length-4)}/${id}`
+
+    const base = `${URI}/${props.match.path.substring(1, props.match.path.length-4)}`
 
     useEffect(() => {
         /* 
@@ -28,21 +28,10 @@ export default function Application(props) {
         delete response.id
         setKeys(Object.keys(response))
     }, [])
-
-    const handleUpdate = async e =>{
-        try {
-            await axios.put(base, state)
-            alert("registro actualizado")
-            history.push('/')
-        } catch (error) {
-            alert(error)
-        }
-    }
     
-    const handleDelete = async e =>{
+    const handleSubmit = async e =>{
         try {        
-            await axios.delete(base)
-            alert("registro eliminado")
+            await axios.post(base,state)
             history.push('/')
         } catch (error) {
             alert(error)
@@ -55,7 +44,6 @@ export default function Application(props) {
     }
     return (
         <div className="container">
-            <h2>Nombre</h2>
             <div className="form">
                 {keys.map(key =>(
                     <div className="form__input" key={key}>
@@ -69,8 +57,7 @@ export default function Application(props) {
                 ))}
 
                 <div className="bottom">
-                    <button className="button__update" onClick={handleUpdate}>Actualizar</button>
-                    <button className="button__delete" onClick={handleDelete}>Eliminar</button>
+                    <button className="button__update" onClick={handleSubmit}>Actualizar</button>
                 </div>
             </div>
         </div>
