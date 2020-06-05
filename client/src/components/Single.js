@@ -14,19 +14,13 @@ export default function Application(props) {
     const base = `${URI}/${props.match.path.substring(1, props.match.path.length-4)}/${id}`
 
     useEffect(() => {
-        /* 
-            axios.get(base)
-                .then(response =>{
-                    setState(response)
-                    delete response.id
-                    setKeys(Object.keys(response))
-                })
-                .catch(error => console.log(error))
-        */
-        let response = {id:0,name:'nombre',data:'data',data2:'data'}
-        setState(response)
-        delete response.id
-        setKeys(Object.keys(response))
+        axios.get(base)
+            .then(response =>{
+                setState(response.data)
+                delete response.data.id
+                setKeys(Object.keys(response.data))
+            })
+            .catch(error => console.log(error))
     }, [])
 
     const handleUpdate = async e =>{
@@ -52,25 +46,28 @@ export default function Application(props) {
         let copy = state
         copy[e.target.name] = e.target.value
         setState(copy)
+        console.log(state)
     }
     return (
-        <div className="container">
-            <h2>Nombre</h2>
-            <div className="form">
-                {keys.map(key =>(
-                    <div className="form__input" key={key}>
-                        <label htmlFor={key}>{key.replace(/^./, key[0].toUpperCase())}</label>
-                        <input 
-                            onChange={handleChange} 
-                            name={key} id={key} 
-                            type="text" 
-                            defaultValue={state[key]}/>
-                    </div>
-                ))}
+        <div className="content">
+            <div className="container">
+                <h2>Nombre</h2>
+                <div className="form">
+                    {keys.map(key =>(
+                        <div className="form__input" key={key}>
+                            <label htmlFor={key}>{key.replace(/^./, key[0].toUpperCase())}</label>
+                            <input 
+                                onChange={handleChange} 
+                                name={key} id={key} 
+                                type="text" 
+                                defaultValue={state[key]}/>
+                        </div>
+                    ))}
 
-                <div className="bottom">
-                    <button className="button__update" onClick={handleUpdate}>Actualizar</button>
-                    <button className="button__delete" onClick={handleDelete}>Eliminar</button>
+                    <div className="bottom">
+                        <button className="button__update" onClick={handleUpdate}>Actualizar</button>
+                        <button className="button__delete" onClick={handleDelete}>Eliminar</button>
+                    </div>
                 </div>
             </div>
         </div>

@@ -11,27 +11,22 @@ export default function Application(props) {
     const [state, setState] = useState({})
     const [keys, setKeys] = useState([])
 
-    const base = `${URI}/${props.match.path.substring(1, props.match.path.length-4)}`
+    const base = `${URI}${props.match.path}`
 
     useEffect(() => {
-        /* 
-            axios.get(base)
-                .then(response =>{
-                    setState(response)
-                    delete response.id
-                    setKeys(Object.keys(response))
-                })
-                .catch(error => console.log(error))
-        */
-        let response = {id:0,name:'nombre',data:'data',data2:'data'}
-        setState(response)
-        delete response.id
-        setKeys(Object.keys(response))
+        console.log()
+        axios.get(base)
+            .then(response =>{
+                setState(response.data)
+                delete response.data.id
+                setKeys(Object.keys(response.data))
+            })
+            .catch(error => console.log(error))
     }, [])
     
     const handleSubmit = async e =>{
         try {        
-            await axios.post(base,state)
+            await axios.post(`${URI}/${props.match.path.substring(1,props.match.path.length-7)}/`,state)
             history.push('/')
         } catch (error) {
             alert(error)
@@ -43,21 +38,23 @@ export default function Application(props) {
         setState(copy)
     }
     return (
-        <div className="container">
-            <div className="form">
-                {keys.map(key =>(
-                    <div className="form__input" key={key}>
-                        <label htmlFor={key}>{key.replace(/^./, key[0].toUpperCase())}</label>
-                        <input 
-                            onChange={handleChange} 
-                            name={key} id={key} 
-                            type="text" 
-                            defaultValue={state[key]}/>
-                    </div>
-                ))}
+        <div className="content">
+            <div className="container">
+                <div className="form">
+                    {keys.map(key =>(
+                        <div className="form__input" key={key}>
+                            <label htmlFor={key}>{key.replace(/^./, key[0].toUpperCase())}</label>
+                            <input 
+                                onChange={handleChange} 
+                                name={key} id={key} 
+                                type="text" 
+                                defaultValue={state[key]}/>
+                        </div>
+                    ))}
 
-                <div className="bottom">
-                    <button className="button__update" onClick={handleSubmit}>Actualizar</button>
+                    <div className="bottom">
+                        <button className="button__update" onClick={handleSubmit}>Crear registro</button>
+                    </div>
                 </div>
             </div>
         </div>

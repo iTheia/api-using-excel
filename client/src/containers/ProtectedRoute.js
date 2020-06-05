@@ -4,6 +4,7 @@ import axios from 'axios'
 import {useSelector} from 'react-redux'
 
 import Single from '../components/Single'
+import Create from '../components/Create'
 import List from './List'
 
 export default function ProtectedRoute(props) {
@@ -17,18 +18,28 @@ export default function ProtectedRoute(props) {
         history.push('/')
     }
     
-    useEffect(() => {/* 
-        axios.post(`${URI}`) */
+    useEffect(() => {
+        
+        axios.post(`${URI}`,token,{
+                headers:{
+                    'x-acces-token':token
+                }
+            })
+            .then(response =>{
+                console.log(response)
+            })
+            .catch(error =>{
+                history.push('/')
+            })
     }, [])
     
 
     return (
         <Route path={path}>
             <Switch>
-                <div className="content">
-                    <Route exact path={`${path}`} component={List} />
-                    <Route path={`${path}/:id`} component={Single} />
-                </div>
+                <Route exact path={`${path}`} component={List} />
+                <Route exact path={`${path}/create`} component={Create} />
+                <Route path={`${path}/:id`} component={Single} />
             </Switch>
         </Route>
     )

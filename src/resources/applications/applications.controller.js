@@ -15,9 +15,8 @@ const applicationsController = {
         })
         let values = ''
         keys.forEach((key, index) => {
-            values += (index === keys.length- 1)? data[key] : `${data[key]},`
+            values += (index === keys.length- 1)? `'${data[key]}'` : `'${data[key]}',`
         })
-
         const value = await query (`INSERT INTO APPLICATIONS (${columns}) values (${values})`  )
         res.send(value)
     },
@@ -31,11 +30,22 @@ const applicationsController = {
 
         let set = ''
         keys.forEach((key, index) => {
-            values += (index === keys.length- 1)? `${key} = '${data[key]}'` : `${key} = '${data[key]}',`
+            set += (index === keys.length- 1)? `${key} = '${data[key]}'` : `${key} = '${data[key]}',`
         })
 
         const value = await query ( `UPDATE APPLICATIONS SET ${set} where id = ${id}` )
         res.send(value)
+    },
+    async base(req, res){
+        const connection = await dbConnection()
+        const query = util.promisify(connection.query).bind(connection) 
+        const test = await query(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS where table_name='APPLICATIONS'`)
+        let empty = {}
+        test.forEach(column =>{        
+            empty[column.COLUMN_NAME] = ''
+        })
+       
+        res.send(empty)
     },
     async delete(req, res){
         const connection = await dbConnection()
@@ -60,7 +70,7 @@ const applicationsController = {
         const id = req.params.id
 
         const value = await query ( `SELECT * FROM APPLICATIONS where id = ${id}` )
-        res.send(value)
+        res.send(value[0])
     },
 }
 

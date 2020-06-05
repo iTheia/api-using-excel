@@ -11,34 +11,39 @@ export default function List(props) {
     const url = props.match.url
 
     useEffect(() => {
-        /* 
-            axios.get(')
-        */
-        let response = [{id:1,name:'asdasd',data:'asdasd'},{id:0,name:'asdasd',data:'asdasd'}]
-        setArray(response)
-        setKeys(Object.keys(response[0]).filter(key => key !== 'id'))
+        console.log(`${URI}${url}`)
+        axios.get(`${URI}${url}`)
+            .then(response => {
+                setArray(response.data)
+                setKeys(Object.keys(response.data[0]).filter(key => key !== 'id'))
+            })
+            .catch(error => alert(error))
     }, [])
 
     return (
-        <div>
-            <h2>{url.substring(1,2).toUpperCase() +url.substring(2,url.length)}</h2>
-            <div className="table">
-                {keys.map(key=>(
-                    <div key={key} className="table__cell table__title">
-                        {key}
-                    </div>
-                ))}
-                {array.map((element, index) =>(
-                    <Link to={`${url}/${element.id}`} key={index} className="table__row">
-                        {keys.map( key =>{
-                            return (
-                                <div key={element.id} key={key} className="table__cell" >
-                                    {element[key]}
-                                </div>
-                            )
-                        })}
-                    </Link>
-                ))}
+        <div className="content">
+            <div className="flex">
+                <h2>{url.substring(1,2).toUpperCase() +url.substring(2,url.length)}</h2>
+
+                <Link to={`${url}/create`} className="crear">Crear registro</Link>
+                <div className="table">
+                    {keys.map(key=>(
+                        <div key={key} className="table__cell table__title">
+                            {key}
+                        </div>
+                    ))}
+                    {array.map((element, index) =>(
+                        <Link to={`${url}/${element.id}`} key={index} className="table__row">
+                            {keys.map( key =>{
+                                return (
+                                    <div key={element.id} key={key} className="table__cell" >
+                                        {element[key]}
+                                    </div>
+                                )
+                            })}
+                        </Link>
+                    ))}
+                </div>
             </div>
         </div>
     )

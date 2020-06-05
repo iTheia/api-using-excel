@@ -1,16 +1,19 @@
 import express from 'express'
 import controller from './technology.controller'
+import {catchErrors} from '../../middlewares'
 
 const userRoute = express.Router()
 
 userRoute.route('/')
-    .get(controller.getDashboard)
-    .post(controller.create)
+    .get(catchErrors(controller.getAll))
+    .post(catchErrors(controller.create))
     
-/* id comes from req.params.id */
+userRoute.get('/create', catchErrors(controller.base))
+
 userRoute.route('/:id')
-    .put(controller.update)
-    .delete(controller.delete)
+    .put(catchErrors(controller.update))
+    .delete(catchErrors(controller.delete))
+    .get(catchErrors(controller.getSingle))
 
 
 export default userRoute

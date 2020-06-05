@@ -7,7 +7,7 @@ const devConfig ={
         database:'db'
     },
     secret:{
-        TOKEN: process.env.TOKEN
+        TOKEN: 'un token jaja xD'
     }
 }
 

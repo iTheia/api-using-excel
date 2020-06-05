@@ -92,9 +92,13 @@
     }
 }
 
-
 h2{
     margin: 10px 0;
+}
+
+
+.crear{
+    
 }
 .button{
     padding: 5px 10px;
@@ -103,7 +107,7 @@ h2{
     min-width: 90px;
     border-radius: 5px;
     overflow: hidden;
-
+    text-decoration: none;
     &__delete{
         @extend .button;
         color: $bg;
@@ -112,7 +116,8 @@ h2{
     &__create{
         @extend .button;
         color: #111;
-        background: rgb(22, 177, 56);
+        background: rgb(44, 231, 85);
+        margin: 10px 0!important;
 
     }
     &__update{

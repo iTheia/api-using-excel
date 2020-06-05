@@ -1,7 +1,5 @@
-import bcrypt from 'bcryptjs'
 import dbConnection from '../../database'
 import util from 'util'
-import jwt from 'jsonwebtoken'
 
 const technologyController = {
     async create(req, res){
@@ -17,10 +15,9 @@ const technologyController = {
         })
         let values = ''
         keys.forEach((key, index) => {
-            values += (index === keys.length- 1)? data[key] : `${data[key]},`
+            values += (index === keys.length- 1)? `'${data[key]}'` : `'${data[key]}',`
         })
-
-        const value = await query (`INSERT INTO TECHNOLOGY (${columns}) values (${values})`  )
+        const value = await query (`INSERT INTO technology (${columns}) values (${values})`  )
         res.send(value)
     },
     async update(req, res){
@@ -33,18 +30,29 @@ const technologyController = {
 
         let set = ''
         keys.forEach((key, index) => {
-            values += (index === keys.length- 1)? `${key} = '${data[key]}'` : `${key} = '${data[key]}',`
+            set += (index === keys.length- 1)? `${key} = '${data[key]}'` : `${key} = '${data[key]}',`
         })
 
-        const value = await query ( `UPDATE TECHNOLOGY SET ${set} where id = ${id}` )
+        const value = await query ( `UPDATE technology SET ${set} where id = ${id}` )
         res.send(value)
+    },
+    async base(req, res){
+        const connection = await dbConnection()
+        const query = util.promisify(connection.query).bind(connection) 
+        const test = await query(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS where table_name='technology'`)
+        let empty = {}
+        test.forEach(column =>{        
+            empty[column.COLUMN_NAME] = ''
+        })
+       
+        res.send(empty)
     },
     async delete(req, res){
         const connection = await dbConnection()
         const query = util.promisify(connection.query).bind(connection)
 
         const id = req.params.id
-        const value = await query ( `delete  TECHNOLOGY where id = ${id}` )
+        const value = await query ( `delete  technology where id = ${id}` )
 
         res.send(value)
         
@@ -53,7 +61,7 @@ const technologyController = {
         const connection = await dbConnection()
         const query = util.promisify(connection.query).bind(connection)
         
-        const value = await query ( `SELECT * FROM TECHNOLOGY` )
+        const value = await query ( `SELECT * FROM technology` )
         res.send(value)
     },
     async getSingle(req, res){
@@ -61,9 +69,9 @@ const technologyController = {
         const query = util.promisify(connection.query).bind(connection)
         const id = req.params.id
 
-        const value = await query ( `SELECT * FROM TECHNOLOGY where id = ${id}` )
-        res.send(value)
-    },
+        const value = await query ( `SELECT * FROM technology where id = ${id}`)
+        res.send(value[0])
+    }
 }
 
 export default technologyController

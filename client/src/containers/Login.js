@@ -38,11 +38,10 @@ export default function Login() {
         setuser(copy)
     }
     async function handleSubmit (e){
+        e.preventDefault()
         try {
-            /* const response = await axios.post(`${URI}/signin`,user)
-            dispatch(login(response.data.token))
-            dispatch(setUser(response.data.user)) */
-            dispatch(login('response.data.token'))
+            const response = await axios.post(`${URI}/signin`,user)
+            dispatch(login(response.data))
             history.push('/applications')
         } catch (error) {
             alert(error)
@@ -61,7 +60,7 @@ export default function Login() {
                         </div>
                         <div className="div">
                             <h5>user</h5>
-                            <input onChange={handleChange} name="user" type="text" className="input"/>
+                            <input onChange={handleChange} name="email" type="text" className="input"/>
                         </div>
                         </div>
                         <div className="input-div pass">
