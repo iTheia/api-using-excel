@@ -16,7 +16,7 @@
   "bugs": {
     "url": "https://github.com/iTheia/trabajo-alan/issues"
   },
-  "homepage": "https://github.com/iTheia/trabajo-alan#readme",
+  "homepage": "http://localhost:5000",
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "body-parser": "^1.19.0",
@@ -28,6 +28,11 @@
     "module": "^1.2.5",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.4",
-    "redux": "^4.0.5"
+    "oracledb": "^4.2.0",
+    "read-excel-file": "^4.0.6",
+    "redux": "^4.0.5",
+    "xls-to-json": "^0.5.4",
+    "xlsx": "^0.16.2",
+    "xlsx-to-json": "^0.3.0"
   }
 }

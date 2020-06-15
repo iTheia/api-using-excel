@@ -4,6 +4,8 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { login, setUser } from '../actions'
 
+const URI = 'http://localhost:5000/api/v1/signin'
+
 export default function Login() {
 
     const [user, setuser] = useState({
@@ -12,7 +14,7 @@ export default function Login() {
     })
 
     const history = useHistory()
-    const URI = useSelector(state => state.URI)
+    
     const dispatch = useDispatch()
     const token = useSelector(state => state.isLogged)
 
@@ -40,9 +42,9 @@ export default function Login() {
     async function handleSubmit (e){
         e.preventDefault()
         try {
-            const response = await axios.post(`${URI}/signin`,user)
-            dispatch(login(response.data))
-            history.push('/applications')
+            const response = await axios.post(`${URI}`,user)
+            dispatch(login(response.data))/* 
+            history.push('/applications') */
         } catch (error) {
             alert(error)
         }

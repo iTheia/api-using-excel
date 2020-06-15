@@ -11,11 +11,17 @@ export default function List(props) {
     const url = props.match.url
 
     useEffect(() => {
-        console.log(`${URI}${url}`)
         axios.get(`${URI}${url}`)
             .then(response => {
                 setArray(response.data)
-                setKeys(Object.keys(response.data[0]).filter(key => key !== 'id'))
+                console.log(response)
+                let data = []
+                response.data.forEach(object => {
+                    let temp = Object.keys(object).filter(key => key !== 'id')
+                    temp = temp.filter(key => object[key] !== '')
+                    temp.forEach(key => (data.indexOf(key) === -1)? data.push(key):null)
+                })
+                setKeys(data)
             })
             .catch(error => alert(error))
     }, [])

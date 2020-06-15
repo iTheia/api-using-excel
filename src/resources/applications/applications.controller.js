@@ -1,77 +1,68 @@
-import dbConnection from '../../database'
-import util from 'util'
+import XLSX  from 'xlsx'
+import path from 'path'
 
-const applicationsController = {
+const controller = {
     async create(req, res){
-        const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection)
-
-        const data = req.body
-        const keys = Object.keys(data)
-
-        let columns = ''
-        keys.forEach((key, index) => {
-            columns += (index === keys.length -1)? key : `${key},`
-        })
-        let values = ''
-        keys.forEach((key, index) => {
-            values += (index === keys.length- 1)? `'${data[key]}'` : `'${data[key]}',`
-        })
-        const value = await query (`INSERT INTO APPLICATIONS (${columns}) values (${values})`  )
-        res.send(value)
+        let data = controller.getData()
+        const id = data[data.length - 1].id + 1
+        const object = req.body
+        object.id = id
+        data.push(object)
+        controller.writeData(data)
+        res.send(object)
     },
     async update(req, res){
-        const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection)
-        
-        const data = req.body
-        const keys = Object.keys(data)
         const id = req.params.id
-
-        let set = ''
-        keys.forEach((key, index) => {
-            set += (index === keys.length- 1)? `${key} = '${data[key]}'` : `${key} = '${data[key]}',`
-        })
-
-        const value = await query ( `UPDATE APPLICATIONS SET ${set} where id = ${id}` )
-        res.send(value)
+        let data = controller.getData()
+        const index = data.findIndex(item => item.id === id)
+        data[index] = req.body
+        controller.writeData(data)
+        res.send(data[index])
     },
     async base(req, res){
-        const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection) 
-        const test = await query(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS where table_name='APPLICATIONS'`)
+        let data = controller.getData()
+        const keys = Object.keys(data[0])
         let empty = {}
-        test.forEach(column =>{        
-            empty[column.COLUMN_NAME] = ''
+        keys.forEach(column =>{        
+            empty[column] = ''
         })
-       
         res.send(empty)
     },
     async delete(req, res){
-        const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection)
-
         const id = req.params.id
-        const value = await query ( `delete  APPLICATIONS where id = ${id}` )
-
-        res.send(value)
+        let data = controller.getData()
+        const index = data.findIndex(item => item.id === id)
+        if(index > -1){
+            data.splice(index,1)
+        }
+        controller.writeData(data)
+        res.send('deleted')
         
     },
     async getAll(req, res){
-        const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection)
-        
-        const value = await query ( `SELECT * FROM APPLICATIONS` )
-        res.send(value)
+        const data = controller.getData()
+        res.send(data)
     },
     async getSingle(req, res){
-        const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection)
         const id = req.params.id
-
-        const value = await query ( `SELECT * FROM APPLICATIONS where id = ${id}` )
-        res.send(value[0])
+        const data = controller.getData()
+        const requestedRow = data.find(row => row.id == id)
+        if(requestedRow === undefined){
+            res.status(404).send({error:404})
+        }
+        res.send(requestedRow)
     },
+    getData(){
+        const excel = XLSX.readFile(path.join(__dirname, './excel.xlsx'))
+        const sheet = excel.SheetNames
+        return XLSX.utils.sheet_to_json(excel.Sheets[sheet[0]])
+    },
+    writeData(data){
+        const newWB = XLSX.utils.book_new()
+        const newWS = XLSX.utils.json_to_sheet(data)
+        XLSX.utils.book_append_sheet(newWB,newWS,"data")
+        XLSX.writeFile(newWB, path.join(__dirname, 'excel.xlsx'))
+    }
 }
 
-export default applicationsController
+export default controller

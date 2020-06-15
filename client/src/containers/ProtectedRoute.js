@@ -9,7 +9,6 @@ import List from './List'
 
 export default function ProtectedRoute(props) {
     
-    const URI = useSelector(state => state.URI)
     const token = useSelector(state => state.isLogged)
     const history = useHistory()
     const path = props.path
@@ -17,22 +16,6 @@ export default function ProtectedRoute(props) {
     if(!token){
         history.push('/')
     }
-    
-    useEffect(() => {
-        
-        axios.post(`${URI}`,token,{
-                headers:{
-                    'x-acces-token':token
-                }
-            })
-            .then(response =>{
-                console.log(response)
-            })
-            .catch(error =>{
-                history.push('/')
-            })
-    }, [])
-    
 
     return (
         <Route path={path}>

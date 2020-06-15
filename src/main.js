@@ -17,15 +17,14 @@ app.use(bodyParser.urlencoded({
 app.use(cors())
 app.use('/api/v1/', router)
 
-if(app.get('env') !== 'dev'){
-  app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, '../client/build/index.html'), (err) =>{
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../client/build/index.html'), (err) =>{
       if (err) {
-        res.status(500).send(err)
+          res.status(500).send(err)
       }
-    })
   })
-}
+})
+
 
 const port = config.port
 server.listen(port)

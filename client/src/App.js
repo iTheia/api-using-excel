@@ -12,12 +12,12 @@ function App() {
     <Router>
       <Switch>
         <Route exact path="/" component={Login} />
-        <>
+        <React.Fragment>
           <Navbar list={link}/>
           {link.map(link => (
             <ProtectedRoute key={link} path={`/${link}`}/>
           ))}   
-        </>
+        </React.Fragment>
       </Switch>
     </Router>
   )
