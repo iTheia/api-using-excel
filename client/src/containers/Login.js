@@ -43,8 +43,8 @@ export default function Login() {
         e.preventDefault()
         try {
             const response = await axios.post(`${URI}`,user)
-            dispatch(login(response.data))/* 
-            history.push('/applications') */
+            dispatch(login(response.data))
+            history.push('/applications')
         } catch (error) {
             alert(error)
         }
