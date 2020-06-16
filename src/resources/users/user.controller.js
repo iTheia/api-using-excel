@@ -86,14 +86,9 @@ const userController = {
     },
     async getAll(req, res){
         const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection)
-        
-        const user = await query(`select * from users`)
-        if(user.length === 0){
-            return res.send('users not found')
-        }
-        res.send(user)
-        
+        const value = await connection.execute( `SELECT * FROM USERS` )
+        console.log(value);
+        res.send(value)
     }
 }
 
