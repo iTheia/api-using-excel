@@ -12,6 +12,7 @@ export default function List(props) {
 
     useEffect(() => {
         axios.get(`${URI}${url}`)
+<<<<<<< HEAD
             .then(response => {
                 setArray(response.data)
                 console.log(response)
@@ -22,6 +23,12 @@ export default function List(props) {
                     temp.forEach(key => (data.indexOf(key) === -1)? data.push(key):null)
                 })
                 setKeys(data)
+=======
+            .then(response => {        
+                console.log(response);
+                //setArray(response.metaData)
+                //setKeys(Object.keys(response.Data[0]).filter(key => key !== 'id') )
+>>>>>>> ad4790ccb2bc0a6d13f95d28573af53a9154e0d3
             })
             .catch(error => alert(error))
     }, [])

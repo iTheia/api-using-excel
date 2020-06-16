@@ -1,15 +1,25 @@
-import XLSX  from 'xlsx'
-import path from 'path'
+import dbConnection from '../../database'
+import conection from '../../database'
 
 const controller = {
     async create(req, res){
-        let data = controller.getData()
-        const id = data[data.length - 1].id + 1
-        const object = req.body
-        object.id = id
-        data.push(object)
-        controller.writeData(data)
-        res.send(object)
+        const connection = await dbConnection()
+        
+
+        const data = req.body
+        const keys = Object.keys(data)
+
+        let columns = ''
+        keys.forEach((key, index) => {
+            columns += (index === keys.length -1)? key : `${key},`
+        })
+        let values = ''
+        keys.forEach((key, index) => {
+            values += (index === keys.length- 1)? `'${data[key]}'` : `'${data[key]}',`
+        })
+        const value = await connection.execute(`INSERT INTO APPLICATIONS (${columns}) values (${values})`  )
+        console.log('Create', value);
+        res.send(value)
     },
     async update(req, res){
         const id = req.params.id
@@ -20,8 +30,9 @@ const controller = {
         res.send(data[index])
     },
     async base(req, res){
-        let data = controller.getData()
-        const keys = Object.keys(data[0])
+        const connection = await dbConnection()
+        const test =  await connection.execute(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS where table_name='APPLICATIONS'`)
+        console.log(test);
         let empty = {}
         keys.forEach(column =>{        
             empty[column] = ''
@@ -40,22 +51,18 @@ const controller = {
         
     },
     async getAll(req, res){
-        const data = controller.getData()
-        res.send(data)
+        const connection = await dbConnection()
+        const value = await connection.execute( `SELECT * FROM APPLICATIONS` )
+        console.log(value);
+        res.send(value)
     },
     async getSingle(req, res){
+        const connection = await dbConnection()
         const id = req.params.id
-        const data = controller.getData()
-        const requestedRow = data.find(row => row.id == id)
-        if(requestedRow === undefined){
-            res.status(404).send({error:404})
-        }
-        res.send(requestedRow)
-    },
-    getData(){
-        const excel = XLSX.readFile(path.join(__dirname, './excel.xlsx'))
-        const sheet = excel.SheetNames
-        return XLSX.utils.sheet_to_json(excel.Sheets[sheet[0]])
+
+        const value = await connection.execute( `SELECT * FROM APPLICATIONS where id = ${id}` )
+        console.log(value);
+        res.send(value[0])
     },
     writeData(data){
         const newWB = XLSX.utils.book_new()
