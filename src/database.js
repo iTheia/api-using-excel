@@ -1,9 +1,12 @@
-import mysql from 'mysql'
+//import mysql from 'mysql'
+const oracledb = require('oracledb');
 import appConfig from './config'
 
 const connection = async () =>{
   try {
-    return mysql.createConnection(appConfig.database)
+    
+    return oracledb.getConnection(appConfig.database)
+    
   } catch (error) {
     console.log(error)
   }

@@ -30,19 +30,23 @@ const userController = {
         res.send(result)
     },
     async sigIn(req, res){
-        const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection)
-        const result = await query(`select * from users where email='${req.body.email}'`)
-        if(result.length === 0){
-            return res.status(401).send('email or pasword are incorrect')
-        }
+        try {
+            const connection = await dbConnection()
+            const result = await connection.execute(`select * from users where email='${req.body.email}'`)
+            
+            if(result.length === 0){
+                return res.status(401).send('email or pasword are incorrect')
+             }
 
-        if(!req.body.password === result.password){
-            return res.status(401).send('email or pasword are incorrect')
-        }
+            if(!req.body.password === result.password){
+                return res.status(401).send('email or pasword are incorrect')
+            }
 
-        const token = jwt.sign({id:result[0].id}, config.secret.TOKEN)
-        res.header('x-acces-token', token).status(200).send(token)
+            const token = jwt.sign({id:result.rows[0].id}, config.secret.TOKEN)
+            res.header('x-acces-token', token).status(200).send(token)
+        } catch (error) {
+            console.log(error);
+        }
     },
     async update(req, res){
         const connection = await dbConnection()

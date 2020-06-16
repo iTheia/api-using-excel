@@ -1,10 +1,11 @@
 import dbConnection from '../../database'
+//import dbOracleConnection from '../../databaseOracle'
 import util from 'util'
 
 const applicationsController = {
     async create(req, res){
         const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection)
+        
 
         const data = req.body
         const keys = Object.keys(data)
@@ -17,7 +18,8 @@ const applicationsController = {
         keys.forEach((key, index) => {
             values += (index === keys.length- 1)? `'${data[key]}'` : `'${data[key]}',`
         })
-        const value = await query (`INSERT INTO APPLICATIONS (${columns}) values (${values})`  )
+        const value = await connection.execute(`INSERT INTO APPLICATIONS (${columns}) values (${values})`  )
+        console.log('Create', value);
         res.send(value)
     },
     async update(req, res){
@@ -38,8 +40,8 @@ const applicationsController = {
     },
     async base(req, res){
         const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection) 
-        const test = await query(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS where table_name='APPLICATIONS'`)
+        const test =  await connection.execute(`SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS where table_name='APPLICATIONS'`)
+        console.log(test);
         let empty = {}
         test.forEach(column =>{        
             empty[column.COLUMN_NAME] = ''
@@ -59,17 +61,18 @@ const applicationsController = {
     },
     async getAll(req, res){
         const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection)
         
-        const value = await query ( `SELECT * FROM APPLICATIONS` )
+        
+        const value = await connection.execute( `SELECT * FROM APPLICATIONS` )
+        //console.log(value);
         res.send(value)
     },
     async getSingle(req, res){
         const connection = await dbConnection()
-        const query = util.promisify(connection.query).bind(connection)
         const id = req.params.id
 
-        const value = await query ( `SELECT * FROM APPLICATIONS where id = ${id}` )
+        const value = await connection.execute( `SELECT * FROM APPLICATIONS where id = ${id}` )
+        console.log(value);
         res.send(value[0])
     },
 }

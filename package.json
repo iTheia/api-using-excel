@@ -28,6 +28,8 @@
     "module": "^1.2.5",
     "mysql": "^2.18.1",
     "nodemon": "^2.0.4",
+    "oracledb": "^4.2.0",
     "redux": "^4.0.5"
-  }
+  },
+  "devDependencies": {}
 }

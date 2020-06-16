@@ -13,9 +13,10 @@ export default function List(props) {
     useEffect(() => {
         console.log(`${URI}${url}`)
         axios.get(`${URI}${url}`)
-            .then(response => {
-                setArray(response.data)
-                setKeys(Object.keys(response.data[0]).filter(key => key !== 'id'))
+            .then(response => {        
+                console.log(response);
+                //setArray(response.metaData)
+                //setKeys(Object.keys(response.Data[0]).filter(key => key !== 'id') )
             })
             .catch(error => alert(error))
     }, [])
