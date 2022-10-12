@@ -29,7 +29,7 @@
     "mysql": "^2.18.1",
     "nodemon": "^2.0.4",
     "oracledb": "^4.2.0",
-    "read-excel-file": "^4.0.6",
+    "read-excel-file": "^5.5.1",
     "redux": "^4.0.5",
     "xls-to-json": "^0.5.4",
     "xlsx": "^0.16.2",
